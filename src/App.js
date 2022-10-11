@@ -1,4 +1,4 @@
-import { Switch, Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import Layout from './components/Layout/Layout';
 import UserProfile from './components/Profile/UserProfile';
@@ -8,7 +8,7 @@ import HomePage from './pages/HomePage';
 function App() {
   return (
     <Layout>
-      <Switch>
+      <Routes>
         <Route path='/' exact>
           <HomePage />
         </Route>
@@ -18,7 +18,7 @@ function App() {
         <Route path='/profile'>
           <UserProfile />
         </Route>
-      </Switch>
+      </Routes>
     </Layout>
   );
 }
