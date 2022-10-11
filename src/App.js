@@ -9,15 +9,9 @@ function App() {
   return (
     <Layout>
       <Routes>
-        <Route path='/' exact>
-          <HomePage />
-        </Route>
-        <Route path='/auth'>
-          <AuthPage />
-        </Route>
-        <Route path='/profile'>
-          <UserProfile />
-        </Route>
+        <Route path='/' element={<HomePage />}/>
+        <Route path='/auth' element={<AuthPage />}/>
+        <Route path='/profile' element={<UserProfile />}/>
       </Routes>
     </Layout>
   );
