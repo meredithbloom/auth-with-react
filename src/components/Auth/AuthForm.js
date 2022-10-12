@@ -45,6 +45,7 @@ const AuthForm = () => {
           return response.json().then(data => {
             // show an error modal
             console.log(data)
+
           })
         }
       });
