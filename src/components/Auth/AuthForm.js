@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useContext } from 'react';
+import AuthContext from '../../store/auth-context';
 
 import classes from './AuthForm.module.css';
 
@@ -7,6 +8,8 @@ const API_KEY = 'AIzaSyD0pVN7ygO4tckAKYHzqRtuvRuK-dilVew'
 const AuthForm = () => {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
+
+  const authCtx = useContext(AuthContext)
 
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false)
@@ -17,9 +20,12 @@ const AuthForm = () => {
 
   const submitHandler = (event) => {
     event.preventDefault()
+
     const enteredEmail = emailInputRef.current.value
     const enteredPassword = passwordInputRef.current.value
+  
     setIsLoading(true)
+
     let url;
     if (isLogin) {
       // trying to log in
@@ -40,7 +46,7 @@ const AuthForm = () => {
             'Content-Type': 'application/json'
           }
         }
-      ).then((response) => {
+      ).then(response => {
         setIsLoading(false)
         if (response.ok) {
           return response.json()
@@ -56,7 +62,7 @@ const AuthForm = () => {
           })
         }
       }).then(data => {
-        console.log(data)
+        authCtx.login(data.idToken)
        })
       .catch(error => {
         alert(error.message)
