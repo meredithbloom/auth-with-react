@@ -19,13 +19,16 @@ const AuthForm = () => {
     event.preventDefault()
     const enteredEmail = emailInputRef.current.value
     const enteredPassword = passwordInputRef.current.value
-    // optional: add validation
     setIsLoading(true)
+    let url;
     if (isLogin) {
-      // if logged in
+      // trying to log in
+      url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`     
     } else {
       // if we are in sign-up mode
-      fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`,
+      url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`
+    }
+    fetch(url,
         {
           method: 'POST',
           body: JSON.stringify({
@@ -40,20 +43,25 @@ const AuthForm = () => {
       ).then((response) => {
         setIsLoading(false)
         if (response.ok) {
-          console.log(response)
+          return response.json()
         } else {
           // throw some error
           return response.json().then(data => {
-            // show an error modal
             let errorMessage = 'Authentication failed.'
-            if (data && data.error && data.error.message) {
-              errorMessage = data.error.message
-            }
-            alert(errorMessage)
+            // if (data && data.error && data.error.message) {
+            //   errorMessage = data.error.message
+            // }
+            // alert(errorMessage)
+            throw new Error(errorMessage)
           })
         }
-      });
-    }
+      }).then(data => {
+        console.log(data)
+       })
+      .catch(error => {
+        alert(error.message)
+      })
+
   }
 
   return (
