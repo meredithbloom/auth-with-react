@@ -9,6 +9,7 @@ const AuthForm = () => {
   const passwordInputRef = useRef();
 
   const [isLogin, setIsLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(false)
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
@@ -18,9 +19,8 @@ const AuthForm = () => {
     event.preventDefault()
     const enteredEmail = emailInputRef.current.value
     const enteredPassword = passwordInputRef.current.value
-
     // optional: add validation
-
+    setIsLoading(true)
     if (isLogin) {
       // if logged in
     } else {
@@ -38,19 +38,22 @@ const AuthForm = () => {
           }
         }
       ).then((response) => {
+        setIsLoading(false)
         if (response.ok) {
           console.log(response)
         } else {
           // throw some error
           return response.json().then(data => {
             // show an error modal
-            console.log(data)
-
+            let errorMessage = 'Authentication failed.'
+            if (data && data.error && data.error.message) {
+              errorMessage = data.error.message
+            }
+            alert(errorMessage)
           })
         }
       });
     }
-
   }
 
   return (
